@@ -34,3 +34,41 @@ SELECT * FROM (
 )
 WHERE total_confirmed_cases > CASES
 ```
+
+### Task 4. Fatality ratio
+
+```
+SELECT sum(cumulative_confirmed) as total_confirmed_cases,
+       sum(cumulative_deceased) as total_deaths,
+       (sum(cumulative_deceased)/sum(cumulative_confirmed))*100 as case_fatality_ratio
+FROM `bigquery-public-data.covid19_open_data.covid19_open_data`
+WHERE country_name="Italy" AND date BETWEEN 'YYYY-MM-DD' and 'YYYY-MM-DD'
+```
+
+### Task 5. Identifying specific day
+
+```
+SELECT date
+FROM `bigquery-public-data.covid19_open_data.covid19_open_data`
+WHERE country_name="Italy" and cumulative_deceased>DEATH
+ORDER BY date asc
+LIMIT 1
+```
+### Task 6. Finding days with zero net new cases
+
+```
+WITH india_cases_by_date AS (
+    SELECT date, SUM(cumulative_confirmed) AS cases
+    FROM `bigquery-public-data.covid19_open_data.covid19_open_data`
+    WHERE country_name ="India" AND date BETWEEN 'YYYY-MM-DD' AND 'YYYY-MM-DD'
+    GROUP BY date
+    ORDER BY date ASC
+), india_previous_day_comparison AS (
+    SELECT date, cases, LAG(cases) OVER(ORDER BY date) AS previous_day, cases - LAG(cases) OVER(ORDER BY date) AS net_new_cases
+    FROM india_cases_by_date
+)
+SELECT count(*)
+FROM india_previous_day_comparison
+WHERE net_new_cases=0
+```
+
