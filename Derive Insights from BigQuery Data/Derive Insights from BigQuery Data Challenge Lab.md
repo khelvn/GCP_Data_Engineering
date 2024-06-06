@@ -1,16 +1,23 @@
 # Derive Insights from BigQuery Data
 
-#### I Ran the following Queries in BigQuery Editor
+## Scenario
+I am part of a public health organization which is tasked with identifying answers to queries related to the Covid-19 pandemic.
+
+The dataset and table that will be used for this analysis will be : bigquery-public-data.covid19_open_data.covid19_open_data. This repository contains country-level datasets of daily time-series data related to COVID-19 globally. It includes data relating to demographics, economy, epidemiology, geography, health, hospitalizations, mobility, government response, and weather.
 
 ### Task 1. Total confirmed cases
+To build a query that will answer "What was the total count of confirmed cases on Date?"
 
+#### Solution
 ```
 SELECT sum(cumulative_confirmed) as total_cases_worldwide
 FROM `bigquery-public-data.covid19_open_data.covid19_open_data`
 WHERE date='YYYY-MM-DD'
 ```
 ### Task 2. Worst affected areas
+To build a query for answering "How many states in the US had more than Death Count deaths on Date?"
 
+#### Solution
 ```
 WITH deaths_by_states AS (
     SELECT subregion1_name as state, sum(cumulative_deceased) as death_count
