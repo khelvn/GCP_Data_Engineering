@@ -1,6 +1,6 @@
 # Derive Insights from BigQuery Data
 
-In this project-based course, I carried out the following projects/tasks
+In this project-based course, I carried out the following projects/tasks. Open the files in this directory for individual projects.
 * SQL for BigQuery and CloudSQL
 * Exploring an Ecommerce Dataset with SQL in BigQuery
 * Troubleshooting Common SQL Errors with BigQuery
