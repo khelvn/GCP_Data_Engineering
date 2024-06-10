@@ -3,43 +3,44 @@
 ## Scenario
 I am part of a public health organization which is tasked with identifying answers to queries related to the Covid-19 pandemic.
 
-The dataset and table that will be used for this analysis will be : bigquery-public-data.covid19_open_data.covid19_open_data. This repository contains country-level datasets of daily time-series data related to COVID-19 globally. It includes data relating to demographics, economy, epidemiology, geography, health, hospitalizations, mobility, government response, and weather.
+The dataset and table that will be used for this analysis will be: bigquery-public-data.covid19_open_data.covid19_open_data. This repository contains country-level datasets of daily time-series data related to COVID-19 globally. It includes data relating to demographics, economy, epidemiology, geography, health, hospitalizations, mobility, government response, and weather.
 
 ### Task 1. Total confirmed cases
-To build a query that will answer "What was the total count of confirmed cases on Date?"
+From the provided covid data, write a query that answers "What was the total count of confirmed cases on 2020-04-05?"
 
 #### Solution
 ```
 SELECT sum(cumulative_confirmed) as total_cases_worldwide
 FROM `bigquery-public-data.covid19_open_data.covid19_open_data`
-WHERE date='YYYY-MM-DD'
+WHERE date='2020-04-05'
 ```
 ### Task 2. Worst affected areas
-To build a query for answering "How many states in the US had more than Death Count deaths on Date?"
+From the provided covid data, write a query for that answers "How many states in the US had more than 100 deaths on 2020-04-05?"
 
 #### Solution
 ```
 WITH deaths_by_states AS (
     SELECT subregion1_name as state, sum(cumulative_deceased) as death_count
     FROM `bigquery-public-data.covid19_open_data.covid19_open_data`
-    WHERE country_name="United States of America" and date='YYYY-MM-DD' and subregion1_name is NOT NULL
+    WHERE country_name="United States of America" and date='2020-04-05' and subregion1_name is NOT NULL
     GROUP BY subregion1_name
 )
 SELECT count(*) as count_of_states
 FROM deaths_by_states
-WHERE death_count > COUNTS
+WHERE death_count > 100
 ```
 ### Task 3. Identify hotspots
+From the provided covid data, write a query for that answers "List all the states in the United States of America that had more than 350 confirmed cases on 2020-04-05?"
 
 ```
 SELECT * FROM (
     SELECT subregion1_name as state, sum(cumulative_confirmed) as total_confirmed_cases
     FROM `bigquery-public-data.covid19_open_data.covid19_open_data`
-    WHERE country_code="US" AND date='YYYY-MM-DD' AND subregion1_name is NOT NULL
+    WHERE country_code="US" AND date='2020-04-05' AND subregion1_name is NOT NULL
     GROUP BY subregion1_name
     ORDER BY total_confirmed_cases DESC
 )
-WHERE total_confirmed_cases > CASES
+WHERE total_confirmed_cases > 350
 ```
 
 ### Task 4. Fatality ratio
